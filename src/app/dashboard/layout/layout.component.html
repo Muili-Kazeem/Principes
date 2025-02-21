@@ -1,0 +1,33 @@
+<div class="flex h-screen w-screen overflow-hidden">
+  <!-- Sidebar -->
+  <nav class="w-64 bg-gray-900 text-white p-4 overflow-y-auto h-full hidden md:block">
+    <h1 class="text-xl font-bold mb-4">Dashboard</h1>
+    <ul>
+      <li class="py-2 hover:bg-gray-700 rounded px-2">Home</li>
+      <li class="py-2 hover:bg-gray-700 rounded px-2">Profile</li>
+      <li class="py-2 hover:bg-gray-700 rounded px-2">Settings</li>
+    </ul>
+  </nav>
+
+  <!-- Mobile Navbar -->
+  <nav class="w-full bg-gray-900 text-white p-4 md:hidden fixed top-0 z-10">
+    <h1 class="text-xl font-bold">Dashboard</h1>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto p-6 h-full">
+    <!-- <div class="max-w-4xl mx-auto">
+      <h2 class="text-2xl font-semibold mb-4">Welcome to your Dashboard</h2>
+      <p class="text-gray-700">Here is your main content area.</p>
+      <div class="mt-6 space-y-4">
+        <div *ngFor="let item of items; let i = index" class="bg-white p-4 rounded shadow">
+          Item {{ i + 1 }}
+        </div>
+      </div>
+    </div> -->
+
+    <div class="max-w-4xl mx-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

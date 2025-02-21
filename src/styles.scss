@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+@forward "./partials/variables";
+@forward "./partials/globals.scss";
+@forward "./partials/fonts";
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
