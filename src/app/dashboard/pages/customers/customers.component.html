@@ -1,25 +1,334 @@
-<section class="w-full border-e-princepsBlue border-2">
-  <header class="flex justify-between items-center">
-    <div>
-      <h1 class="font-semibold text-xl text-princepsBlue mb-2">Customers</h1>
-      <p class="text-sm font-normal text-princepsBlack_1">Create, edit and manage your customers.</p>
-    </div>
+<section class="w-full">
+  <nav class="border-b-2 border-b-princepsGrey_1/20">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4">
+      <div></div>
 
-    <!-- <p-splitbutton label="Save" (onClick)="save()" severity="contrast">
-      <ng-template #content>
-        <span class="flex items-center">
-          <img alt="logo" src="svg/user-icon.svg" style="height: 1rem; margin-right: 1rem" />
-          <span> Add new customer </span>
+      <p-iconfield>
+        <p-inputicon class="pi pi-search" />
+        <input pInputText [(ngModel)]="search" placeholder="search customer details" variant="filled"/>
+      </p-iconfield>
+
+      <div class="p-4 flex gap-3 items-center">
+        <span class="inline-span p-3 rounded-full bg-[#F7F7F9] border-[#EBEBEB]">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_1_511)">
+            <path d="M9.99935 18.3334C14.6017 18.3334 18.3327 14.6025 18.3327 10.0001C18.3327 5.39771 14.6017 1.66675 9.99935 1.66675C5.39698 1.66675 1.66602 5.39771 1.66602 10.0001C1.66602 14.6025 5.39698 18.3334 9.99935 18.3334Z" stroke="#6C6B72" stroke-width="1.5"/>
+            <path d="M8.33398 7.49992C8.33398 6.57944 9.08015 5.83325 10.0007 5.83325C10.9212 5.83325 11.6673 6.57944 11.6673 7.49992C11.6673 7.83171 11.5704 8.14086 11.4032 8.40059C10.9052 9.17467 10.0007 9.91275 10.0007 10.8333V11.2499" stroke="#6C6B72" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M9.99414 14.1667H10.0009" stroke="#6C6B72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_1_511">
+            <rect width="20" height="20" fill="white"/>
+            </clipPath>
+            </defs>
+          </svg>
         </span>
-      </ng-template>
-    </p-splitbutton> -->
-  </header>
-
-  <!-- <h2 class="text-2xl font-semibold mb-4">Welcome to your Dashboard</h2>
-  <p class="text-gray-700">Here is your main content area.</p>
-  <div class="mt-6 space-y-4">
-    <div *ngFor="let item of items; let i = index" class="bg-white p-4 rounded shadow">
-      Item {{ i + 1 }}
+        <span class="inline-span p-3 rounded-full bg-[#F7F7F9] border-[#EBEBEB]">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.10892 12.3081C1.93171 13.4697 2.72399 14.2761 3.69403 14.6779C7.41299 16.2186 12.5883 16.2186 16.3072 14.6779C17.2773 14.2761 18.0696 13.4697 17.8924 12.3081C17.7835 11.5942 17.245 10.9997 16.846 10.4192C16.3234 9.6495 16.2715 8.80992 16.2714 7.91675C16.2714 4.46497 13.4639 1.66675 10.0007 1.66675C6.53743 1.66675 3.72993 4.46497 3.72993 7.91675C3.72984 8.80992 3.67792 9.6495 3.15533 10.4192C2.75635 10.9997 2.21783 11.5942 2.10892 12.3081Z" stroke="#6C6B72" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6.66602 15.8333C7.04809 17.2709 8.3956 18.3333 9.99935 18.3333C11.6031 18.3333 12.9506 17.2709 13.3327 15.8333" stroke="#6C6B72" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="inline-span p-3 rounded-full bg-[#F7F7F9] border-[#EBEBEB]">
+          <span class="w-5 h-5 text-princepsBlue">
+            JA
+          </span>
+        </span>
+      </div>
     </div>
-  </div> -->
+  </nav>
+
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <section class="max-w-7xl mx-auto px-4 py-6" *ngIf="customers.length > 0">
+      <header class="flex justify-between items-center my-6">
+        <div>
+          <h1 class="font-semibold text-xl text-princepsBlue mb-2">Customers</h1>
+          <p class="text-sm font-normal text-princepsBlack_1">Create, edit and manage your customers.</p>
+        </div>
+
+        <button class="flex items-center bg-princepsBlue text-princepsWhite px-4 rounded-lg shadow" (click)="openCreateNewCustomerDialog()">
+          <span class="mr-2 py-2">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g filter="url(#filter0_d_431_157)">
+              <path d="M7.99967 4.99999C7.99967 6.28866 6.95501 7.33332 5.66634 7.33332C4.37767 7.33332 3.33301 6.28866 3.33301 4.99999C3.33301 3.71132 4.37767 2.66666 5.66634 2.66666C6.95501 2.66666 7.99967 3.71132 7.99967 4.99999Z" stroke="white" shape-rendering="crispEdges"/>
+              </g>
+              <g filter="url(#filter1_d_431_157)">
+              <path d="M9 7.33332C10.2887 7.33332 11.3333 6.28866 11.3333 4.99999C11.3333 3.71132 10.2887 2.66666 9 2.66666" stroke="white" stroke-linecap="round" shape-rendering="crispEdges"/>
+              </g>
+              <g filter="url(#filter2_d_431_157)">
+              <path d="M8.76161 13.3333H2.5711C1.88732 13.3333 1.33301 12.8217 1.33301 12.1905C1.33301 10.6125 2.71879 9.33334 4.42825 9.33334H6.90441C7.60121 9.33334 8.24427 9.54588 8.76161 9.90454" stroke="white" stroke-linecap="round" stroke-linejoin="round" shape-rendering="crispEdges"/>
+              </g>
+              <g filter="url(#filter3_d_431_157)">
+              <path d="M12.667 9.33334V13.3333M14.667 11.3333H10.667" stroke="white" stroke-linecap="round" shape-rendering="crispEdges"/>
+              </g>
+              <defs>
+              <filter id="filter0_d_431_157" x="2.83301" y="2.16666" width="5.66699" height="6.66666" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="1"/>
+              <feComposite in2="hardAlpha" operator="out"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_431_157"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_431_157" result="shape"/>
+              </filter>
+              <filter id="filter1_d_431_157" x="8.5" y="2.16666" width="3.33301" height="6.66666" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="1"/>
+              <feComposite in2="hardAlpha" operator="out"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_431_157"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_431_157" result="shape"/>
+              </filter>
+              <filter id="filter2_d_431_157" x="0.833008" y="8.83334" width="8.42871" height="6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="1"/>
+              <feComposite in2="hardAlpha" operator="out"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_431_157"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_431_157" result="shape"/>
+              </filter>
+              <filter id="filter3_d_431_157" x="10.167" y="8.83334" width="5" height="6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="1"/>
+              <feComposite in2="hardAlpha" operator="out"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_431_157"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_431_157" result="shape"/>
+              </filter>
+              </defs>
+            </svg>
+          </span>
+
+          <span class="px-2 py-2">Add new customer</span>
+
+          <span class="pl-2 ml-2 py-2 border-l border-princepsBlack_1 cursor-pointer">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.5 6.75004C13.5 6.75004 10.1858 11.25 9 11.25C7.8141 11.25 4.5 6.75 4.5 6.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+      </header>
+
+      <section class="my-8 mb-10 flex gap-3">
+        <div class="relative basis-auto flex-1 bg-princepsWhite border border-princepsBorderGrey_2 shadow rounded-lg p-2">
+          <span class="absolute content-[''] w-5/6 h-10 -z-30 bg-white border border-princepsBorderGrey_2 rounded-lg bottom-[-8px] left-1/2 -translate-x-1/2 shadow"></span>
+          <div class="w-full bg-princepsWhite p-3">
+            <p class="text-princepsGrey_1 text-sm">All customers</p>
+            <h2 class="font-semibold text-3xl py-3">{{ customerPagination.total }}</h2>
+          </div>
+        </div>
+
+        <div class="relative basis-auto flex-1 bg-princepsWhite border border-princepsBorderGrey_2 shadow rounded-lg p-2 flex gap-2">
+          <span class="absolute content-[''] w-5/6 h-10 -z-30 bg-white border border-princepsBorderGrey_2 rounded-lg bottom-[-8px] left-1/2 -translate-x-1/2 shadow"></span>
+          <div class="w-full bg-princepsWhite p-3">
+            <p class="text-princepsGrey_1 text-sm">Active customers</p>
+            <h2 class="font-semibold text-3xl py-3">{{ customerCount.active }}</h2>
+          </div>
+
+          <div class="w-full bg-princepsWhite p-3">
+            <p class="text-princepsGrey_1 text-sm">Overdue cutomers</p>
+            <h2 class="font-semibold text-3xl py-3"> {{ customerCount.overdue }}</h2>
+          </div>
+        </div>
+
+        <div class="relative basis-auto flex-1 bg-princepsWhite border border-princepsBorderGrey_2 shadow rounded-lg p-2">
+          <span class="absolute content-[''] w-5/6 h-10 -z-30 bg-white border border-princepsBorderGrey_2 rounded-lg bottom-[-8px] left-1/2 -translate-x-1/2 shadow"></span>
+          <div class="w-full bg-princepsWhite p-3">
+            <p class="text-princepsGrey_1 text-sm">Inactive & Dormant</p>
+            <h2 class="font-semibold text-3xl py-3">{{ customerCount.inactive + customerCount.dormant }} </h2>
+          </div>
+        </div>
+      </section>
+
+      <div class="inline-block w-full">
+
+        <form [formGroup]="filterForm">
+          <div class="flex justify-between items-center my-6">
+            <p-iconfield>
+              <p-inputicon styleClass="pi pi-search" />
+              <input type="text" formControlName="search" pInputText placeholder="Search customers"/>
+            </p-iconfield>
+
+            <div class="flex items-center gap-2">
+              <button class="font-light px-4 py-2 border border-princepsBorderGrey_1 bg-white text-princepsBlack_1 rounded-md hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                <i class="pi pi-sliders-v mr-2"></i>
+                Filter
+              </button>
+
+              <button class="font-light px-4 py-2 border border-princepsBorderGrey_1 bg-white text-princepsBlack_1 rounded-md hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                <i class="pi pi-cog mr-2"></i>
+                Edit columns
+              </button>
+
+              <button class="font-light px-4 py-2 border border-princepsBorderGrey_1 bg-white text-princepsBlack_1 rounded-md hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                <i class="pi pi-download mr-2"></i>
+                Export.csv
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div class="card my-6">
+          <p-table
+            #dt
+            [value]="customers"
+            [(selection)]="selectedCustomers"
+            dataKey="code"
+            [tableStyle]="{'min-width': '50rem'}"
+            [size]="'large'"
+            [selectionMode]="'multiple'"
+          >
+            <ng-template #header>
+              <tr>
+                <th style="width: 4rem">
+                  <p-tableHeaderCheckbox />
+                </th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Joined at</th>
+                <th></th>
+              </tr>
+            </ng-template>
+
+            <ng-template #body let-customer>
+              <tr class="text-princepsBlack_1">
+                <td>
+                  <p-tableCheckbox [value]="customer" />
+                </td>
+                <td class="font-semibold text-princepsBlack_2">{{customer.first_name}} {{customer.last_name}}</td>
+                <td>{{customer.email}}</td>
+                <td>{{customer.telephone}}</td>
+                <td>
+                  <span class="text-sm font-medium rounded-3xl bg-princepsLightBlue p-2 px-4" [ngClass]="getStatusClass(customer.status)">{{ customer.status | titlecase }}</span>
+                  <!-- <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" /> -->
+                </td>
+                <td>{{customer.created_at | date: "LLL dd, yyy, h:mm:ss a z"}}</td>
+                <td>hm</td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+          <div class="flex justify-between items-center my-6">
+            <span class="text-princepsGrey_2 font-normal text-sm">
+              Showing < <span class="text-princepsBlue">{{customerPagination.count}}</span> > rows
+            </span>
+
+            <p-paginator
+              [rows]="rows"
+              [first]="first"
+              [totalRecords]="totalRecord"
+              [showJumpToPageDropdown]="false"
+              [showFirstLastIcon]="false"
+              (onPageChange)="onPageChange($event)"
+            />
+
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+
+  <ng-template #loadingTemplate>
+    <div class="max-w-7xl w-full h-full mx-auto flex justify-center items-center">
+      <i class="pi pi-spin pi-cog" style="font-size: 3rem"></i>
+    </div>
+  </ng-template>
 </section>
+
+
+
+<p-dialog [(visible)]="createCustomerDialog" [modal]="true" [style]="{ width: '60vw' }">
+  <ng-template #header>
+    <div class="inline-flex items-center justify-center gap-2">
+      <span class="font-bold whitespace-nowrap">Create New Customer</span>
+    </div>
+  </ng-template>
+
+  <span class="text-surface-500 dark:text-surface-400 block mb-8">Create new customer</span>
+
+  <form [formGroup]="newCustomerForm">
+    <div class="flex gap-4 mb-4">
+      <div class="flex flex-col gap-2">
+        <label for="firstname" class="w-full">First Name</label>
+        <input pInputText id="firstname" class="flex-auto" formControlName="firstname" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="lastname" class="w-24">Last Name</label>
+        <input pInputText id="lastname" class="flex-auto" formControlName="lastname" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="telephone" class="w-24">Telephone</label>
+        <input pInputText id="telephone" class="flex-auto" formControlName="telephone" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="bvn" class="w-24">BVN</label>
+        <input pInputText id="bvn" class="flex-auto" formControlName="bvn" autocomplete="off" />
+      </div>
+    </div>
+
+    <div class="flex gap-4 mb-4">
+      <div class="flex flex-col gap-2">
+        <label for="residential_address" class="w-full">Address</label>
+        <input pInputText id="residential_address" class="flex-auto" formControlName="residential_address" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="city" class="w-full">City</label>
+        <input pInputText id="city" class="flex-auto" formControlName="city" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="state" class="w-full">State</label>
+        <input pInputText id="state" class="flex-auto" formControlName="state" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="country" class="w-full">Country</label>
+        <input pInputText id="country" class="flex-auto" formControlName="country" autocomplete="off" />
+      </div>
+    </div>
+
+    <div class="flex gap-4 mb-4">
+      <div class="flex flex-col gap-2">
+        <label for="bankcode" class="w-full">Bank Code</label>
+        <input pInputText id="bankcode" class="flex-auto" formControlName="bankcode" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="accountnumber" class="w-full">Account Number</label>
+        <input pInputText id="accountnumber" class="flex-auto" formControlName="accountnumber" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="email" class="w-full">Email</label>
+        <input pInputText id="email" class="flex-auto" formControlName="email" autocomplete="off" />
+      </div>
+    </div>
+
+    <div class="flex gap-4 mb-4">
+      <div class="flex flex-col gap-2">
+        <label for="company_id" class="w-full"> Company ID </label>
+        <input pInputText id="company_id" formControlName="company_id" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="dob" class="w-full"> Date of Birth </label>
+        <p-datepicker formControlName="dob" [showIcon]="true" inputId="dob" [showOnFocus]="false" />
+      </div>
+    </div>
+  </form>
+
+  <ng-template #footer>
+    <p-button label="Close" [text]="true" severity="danger" (click)="createCustomerDialog = false" />
+    <p-button label="Create New Customer" (click)="createCustomerDialog = false" />
+  </ng-template>
+</p-dialog>
