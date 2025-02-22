@@ -96,7 +96,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
   openCreateNewCustomerDialog() {
     this.createCustomerDialog = true;
-    console.log("Writing new customer");
+    // console.log("Writing new customer");
   }
 
   initFilterForm() {
@@ -110,13 +110,13 @@ export class CustomersComponent implements OnInit, OnDestroy {
       firstname: ["", Validators.required],
       lastname: ["", Validators.required],
       telephone: ["", Validators.required],
-      bvn: ["", Validators.required],
+      bvn: ["", [Validators.required, Validators.minLength(11)]],
       dob: ["", Validators.required],
       residential_address: ["", Validators.required],
       state: ["", Validators.required],
       bankcode: ["", Validators.required],
       accountnumber: ["", Validators.required],
-      company_id: ["", Validators.required],
+      // company_id: ["", Validators.required],
       email: ["", Validators.required],
       city: ["", Validators.required],
       country: ["", Validators.required],
@@ -126,20 +126,22 @@ export class CustomersComponent implements OnInit, OnDestroy {
   onPageChange(event: any) {
     this.first = event.first as number;
     this.rows = event.rows as number;
-    console.log(event);
+    // console.log(event);
     this.searchQuery.page = event.page + 1;
     this.getCustomer();
   }
 
   save() {
-    console.log("WHo knows");
+    // console.log("WHo knows");
   }
 
   createNewCustomer() {
+    this.createCustomerDialog = false;
+
     this.newCustomerData = { ...this.newCustomerForm.value };
     this._home.createCustomer(this.newCustomerData).subscribe(
       (res) => {
-        console.log(res);
+        // console.log(res);
       }
     )
   }

@@ -34,7 +34,9 @@ export class HomeService {
   ): Observable<ICustomer> {
     const endpoint = `${this.url}/customers`;
     return this.http.post<ICustomerResponse>(endpoint, customer).pipe(
-      tap( res => { console.log(res) } ),
+      tap( res => {
+        // console.log(res)
+      } ),
       map( res => res.data )
     );
   }
